@@ -90,6 +90,14 @@ public class SplitConfig {
                 .end()
                 .build();
     }
+    @Bean
+    public Job splitflowJobConcuOn() {
+        return jobBuilderFactory.get("splitflowJobConcu")
+                .start(splitflowDemo())
+                .on("COMPLETED").to(splitflowDemo2())
+                .from(splitflowstep2()).on("COMPLETED").to(splitflowstep3())
+                .from(splitflowstep3()).end().build();
+    }
 
 
 }
