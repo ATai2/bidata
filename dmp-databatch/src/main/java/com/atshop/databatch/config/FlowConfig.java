@@ -55,12 +55,12 @@ public class FlowConfig {
                 .next(flowStep2())
                 .build();
     }
-
-    @Bean
-    public Job flowJob() {
-        return jobBuilderFactory.get("flowJob")
-                .start(flowDemo())
-                .end()
-                .build();
-    }
+//
+//    @Bean
+//    public Job flowJob() {
+//        return jobBuilderFactory.get("flowJob")
+//                .start(flowDemo())
+//                .end()
+//                .build();
+//    }
 }

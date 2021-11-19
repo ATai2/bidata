@@ -1,5 +1,6 @@
 package com.atshop.databatch.config;
 
+import com.atshop.databatch.bean.MyDecider;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
@@ -18,7 +19,7 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 @Configuration
 @EnableBatchProcessing
-public class SplitConfig {
+public class JobExcutionDecidorConfig {
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
@@ -26,78 +27,77 @@ public class SplitConfig {
     private StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public Step splitflowstep1() {
-        return stepBuilderFactory.get("splitflowstep1")
+    public Step jobExcutionDecidor1() {
+        return stepBuilderFactory.get("jobExcutionDecidor1")
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-                        System.out.println("splitflowstep1  "+Thread.currentThread().getName());
+                        System.out.println("jobExcutionDecidor1  "+Thread.currentThread().getName());
+
                         return RepeatStatus.FINISHED;
                     }
                 }).build();
     }
 
     @Bean
-    public Step splitflowstep2() {
-        return stepBuilderFactory.get("splitsplitflowstep2")
+    public Step jobExcutionDecidor2() {
+        return stepBuilderFactory.get("splitjobExcutionDecidor2")
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-                        System.out.println("splitsplitflowstep2  "+Thread.currentThread().getName());
+                        System.out.println("splitjobExcutionDecidor2  "+Thread.currentThread().getName());
+                        System.out.println("even");
                         return RepeatStatus.FINISHED;
                     }
                 }).build();
     }    @Bean
-    public Step splitflowstep3() {
-        return stepBuilderFactory.get("splitflowstep3")
+    public Step jobExcutionDecidor3() {
+        return stepBuilderFactory.get("jobExcutionDecidor3")
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-                        System.out.println("splitflowstep3  "+Thread.currentThread().getName());
+                        System.out.println("jobExcutionDecidor3  "+Thread.currentThread().getName());
+                        System.out.println("odd");
                         return RepeatStatus.FINISHED;
                     }
                 }).build();
     }
 
+//    @Bean
+//    public Flow splitflowDemo() {
+//        return new FlowBuilder<Flow>("flowDemo")
+//                .start(jobExcutionDecidor1())
+//                .next(jobExcutionDecidor2())
+//                .build();
+//    }
+//    @Bean
+//    public Flow splitflowDemo2() {
+//        return new FlowBuilder<Flow>("flowDemo")
+//                .start(jobExcutionDecidor1())
+//                .next(jobExcutionDecidor2())
+//                .build();
+//    }
     @Bean
-    public Flow splitflowDemo() {
-        return new FlowBuilder<Flow>("flowDemo")
-                .start(splitflowstep1())
-                .next(splitflowstep2())
-                .build();
+    public MyDecider myDecider() {
+        return new MyDecider();
     }
+
     @Bean
-    public Flow splitflowDemo2() {
-        return new FlowBuilder<Flow>("flowDemo")
-                .start(splitflowstep1())
-                .next(splitflowstep2())
+    public Job jobExcutionDecidorJob() {
+        return jobBuilderFactory.get("flowJob")
+                .start(jobExcutionDecidor1())
+                .next(myDecider())
+                .from(myDecider()).on("even").to(jobExcutionDecidor2())
+                .from(myDecider()).on("odd").to(jobExcutionDecidor3())
+                .from(jobExcutionDecidor3()).on("*").to(myDecider())
+                .end()
                 .build();
     }
 
-//    @Bean
-//    public Job splitflowJob() {
-//        return jobBuilderFactory.get("flowJob")
-//                .start(splitflowDemo())
-//                .next(splitflowDemo2())
-//                .end()
-//                .build();
-//    }
-//    @Bean
-//    public Job splitflowJobConcu() {
-//        return jobBuilderFactory.get("splitflowJobConcu")
-//                .start(splitflowDemo())
-//                .split(new SimpleAsyncTaskExecutor()).add(splitflowDemo2())
-//                .end()
-//                .build();
-//    }
-//    @Bean
-//    public Job splitflowJobConcuOn() {
-//        return jobBuilderFactory.get("splitflowJobConcu")
-//                .start(splitflowDemo())
-//                .on("COMPLETED").to(splitflowDemo2())
-//                .from(splitflowstep2()).on("COMPLETED").to(splitflowstep3())
-//                .from(splitflowstep3()).end().build();
-//    }
+
+
+
+
 
 
 }

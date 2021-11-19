@@ -24,14 +24,14 @@ public class JobConfig {
         this.stepBuilderFactory = stepBuilderFactory;
     }
 
-    @Bean
-    public Job helloJob() {
-        return jobBuilderFactory.get("helloJob")
-                .start(step1())
-                .next(step2())
-                .next(step3())
-                .build();
-    }
+//    @Bean
+//    public Job helloJob() {
+//        return jobBuilderFactory.get("helloJob")
+//                .start(step1())
+//                .next(step2())
+//                .next(step3())
+//                .build();
+//    }
 
     @Bean
     public Step step1() {
