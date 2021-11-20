@@ -32,7 +32,7 @@ public class JobExcutionDecidorConfig {
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-                        System.out.println("jobExcutionDecidor1  "+Thread.currentThread().getName());
+                        System.out.println("jobExcutionDecidor1  " + Thread.currentThread().getName());
 
                         return RepeatStatus.FINISHED;
                     }
@@ -45,25 +45,27 @@ public class JobExcutionDecidorConfig {
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-                        System.out.println("splitjobExcutionDecidor2  "+Thread.currentThread().getName());
+                        System.out.println("splitjobExcutionDecidor2  " + Thread.currentThread().getName());
                         System.out.println("even");
                         return RepeatStatus.FINISHED;
                     }
                 }).build();
-    }    @Bean
+    }
+
+    @Bean
     public Step jobExcutionDecidor3() {
         return stepBuilderFactory.get("jobExcutionDecidor3")
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-                        System.out.println("jobExcutionDecidor3  "+Thread.currentThread().getName());
+                        System.out.println("jobExcutionDecidor3  " + Thread.currentThread().getName());
                         System.out.println("odd");
                         return RepeatStatus.FINISHED;
                     }
                 }).build();
     }
 
-//    @Bean
+    //    @Bean
 //    public Flow splitflowDemo() {
 //        return new FlowBuilder<Flow>("flowDemo")
 //                .start(jobExcutionDecidor1())
@@ -93,11 +95,6 @@ public class JobExcutionDecidorConfig {
 //                .end()
 //                .build();
 //    }
-
-
-
-
-
 
 
 }
