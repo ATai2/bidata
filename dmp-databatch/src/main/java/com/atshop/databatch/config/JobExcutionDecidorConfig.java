@@ -82,17 +82,17 @@ public class JobExcutionDecidorConfig {
         return new MyDecider();
     }
 
-    @Bean
-    public Job jobExcutionDecidorJob() {
-        return jobBuilderFactory.get("flowJob")
-                .start(jobExcutionDecidor1())
-                .next(myDecider())
-                .from(myDecider()).on("even").to(jobExcutionDecidor2())
-                .from(myDecider()).on("odd").to(jobExcutionDecidor3())
-                .from(jobExcutionDecidor3()).on("*").to(myDecider())
-                .end()
-                .build();
-    }
+//    @Bean
+//    public Job jobExcutionDecidorJob() {
+//        return jobBuilderFactory.get("flowJob")
+//                .start(jobExcutionDecidor1())
+//                .next(myDecider())
+//                .from(myDecider()).on("even").to(jobExcutionDecidor2())
+//                .from(myDecider()).on("odd").to(jobExcutionDecidor3())
+//                .from(jobExcutionDecidor3()).on("*").to(myDecider())
+//                .end()
+//                .build();
+//    }
 
 
 
