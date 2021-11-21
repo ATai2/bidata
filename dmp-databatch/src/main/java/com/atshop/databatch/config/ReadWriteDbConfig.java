@@ -2,7 +2,6 @@ package com.atshop.databatch.config;
 
 import com.atshop.databatch.bean.DbJdbcWriter;
 import com.atshop.databatch.bean.User;
-import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -41,14 +40,14 @@ public class ReadWriteDbConfig {
     public Step readStep2() {
       return  stepBuilderFactory.get("reader")
                 .<User,User>chunk(10)
-                .reader(read2())
+                .reader(readDb())
                 .writer(dbJdbcWriter)
                 .build();
     }
 
     @Bean
     @StepScope
-    public  ItemReader<User> read2() {
+    public  ItemReader<User> readDb() {
 
         JdbcPagingItemReader<User> reader = new JdbcPagingItemReader<User>();
         reader.setDataSource(datasource);
@@ -78,15 +77,13 @@ public class ReadWriteDbConfig {
 //        return new MyReader2(list);
     }
 
-    @Bean
-    public Job readWriteJob2() {
-        return jobBuilderFactory.get("readwrite2")
-                .start(readStep2())
+//    @Bean
+//    public Job readWriteJob2() {
+//        return jobBuilderFactory.get("readwrite2")
+//                .start(readStep2())
+//                .build();
+//    }
 
-                .build();
-
-
-    }
 
 
 }
