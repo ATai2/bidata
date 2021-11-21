@@ -52,7 +52,7 @@ public class ReadWriteDbConfig {
 
         JdbcPagingItemReader<User> reader = new JdbcPagingItemReader<User>();
         reader.setDataSource(datasource);
-        reader.setFetchSize(10);
+        reader.setFetchSize(1000);
         reader.setRowMapper(new RowMapper<User>() {
             @Override
             public User mapRow(ResultSet resultSet, int i) throws SQLException {
