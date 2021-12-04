@@ -22,7 +22,6 @@ public class WordCount {
 
     public static class MyFlatMapper implements FlatMapFunction<String, Tuple2<String, Integer>> {
 
-
         @Override
         public void flatMap(String s, Collector<Tuple2<String, Integer>> collector) throws Exception {
             String[] words = s.split(" ");
