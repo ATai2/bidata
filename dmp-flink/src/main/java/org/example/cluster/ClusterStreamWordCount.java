@@ -11,8 +11,9 @@ import org.apache.flink.util.Collector;
 public class ClusterStreamWordCount {
     public static void mainTest(String[] args) throws Exception {
         StreamExecutionEnvironment env= StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setParallelism(8);
-//    --host=localhost --port=7777
+        env.setParallelism(1);
+//    --host localhost --port 7777
+//    --host 192.168.31.19 --port 7777
         ParameterTool parameterTool = ParameterTool.fromArgs(args);
         String host = parameterTool.get("host");
         int port = parameterTool.getInt("port");
