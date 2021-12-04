@@ -12,7 +12,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 public class StreamWordCount {
-    public static void main(String[] args) throws Exception {
+    public static void mainTest(String[] args) throws Exception {
         StreamExecutionEnvironment env= StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(8);
         String inputPath = StreamWordCount.class.getClassLoader().getResource("hello.txt").getPath();

@@ -8,7 +8,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.util.Collector;
 
 public class WordCount {
-    public static void main(String[] args) throws Exception {
+    public static void mainTest(String[] args) throws Exception {
         ExecutionEnvironment env=ExecutionEnvironment.getExecutionEnvironment();
         String inputPath = WordCount.class.getClassLoader().getResource("hello.txt").getPath();
         DataSource<String> stringDataSource = env.readTextFile(inputPath);
