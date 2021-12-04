@@ -7,7 +7,6 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
-import org.example.streamwordcount.StreamWordCount;
 
 public class ClusterStreamWordCount {
     public static void mainTest(String[] args) throws Exception {
@@ -22,7 +21,7 @@ public class ClusterStreamWordCount {
 
         DataStreamSource<String> streamSource = env.socketTextStream(host, port);
 //        fields: tuple位置
-        DataStream<Tuple2<String, Integer>> sum = streamSource.flatMap(new StreamWordCount.MyFlatMapper())
+        DataStream<Tuple2<String, Integer>> sum = streamSource.flatMap(new MyFlatMapper())
                 .keyBy(0)
                 .sum(1);
         sum.print();
