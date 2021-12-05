@@ -7,17 +7,19 @@ services:
     ports:
       - "8081:8081"
     command: jobmanager
+    volumes:
+      - ./task/flink-conf.yaml:/opt/flink/conf/flink-conf.yaml
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - TZ=Asia/Shanghai
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: 2G
-        reservations:
-          cpus: '2'
-          memory: 2G
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '2'
+#          memory: 2G
+#        reservations:
+#          cpus: '2'
+#          memory: 2G
   taskmanager:
     image: flink
     expose:
@@ -26,19 +28,21 @@ services:
     depends_on:
       - jobmanager
     command: taskmanager
+    volumes:
+      - ./task/flink-conf.yaml:/opt/flink/conf/flink-conf.yaml
     links:
       - "jobmanager:jobmanager"
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - TZ=Asia/Shanghai
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: 2G
-        reservations:
-          cpus: '2'
-          memory: 2G
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '2'
+#          memory: 2G
+#        reservations:
+#          cpus: '2'
+#          memory: 2G
   taskmanager2:
     image: flink
     expose:
@@ -47,16 +51,18 @@ services:
     depends_on:
       - jobmanager
     command: taskmanager
+    volumes:
+      - ./task/flink-conf.yaml:/opt/flink/conf/flink-conf.yaml
     links:
       - "jobmanager:jobmanager"
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - TZ=Asia/Shanghai
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: 2G
-        reservations:
-          cpus: '2'
-          memory: 2G
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '2'
+#          memory: 2G
+#        reservations:
+#          cpus: '2'
+#          memory: 2G

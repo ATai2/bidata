@@ -1,0 +1,88 @@
+version: '2'
+services:
+#  zookeeper:
+#    image: wurstmeister/zookeeper
+#    ports:
+#      - "2181:2181"
+  zoo1:
+    image: zookeeper:3.5
+    restart: always
+    hostname: zoo1
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+    ports:
+      - 2181:2181
+    environment:
+      ZOO_MY_ID: 1
+      #      ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
+
+  zoo2:
+    image: zookeeper:3.5
+    restart: always
+    hostname: zoo2
+    ports:
+      - 2182:2181
+    environment:
+      TZ: Asia/Shanghai
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=0.0.0.0:2888:3888;2181 server.3=zoo3:2888:3888;2181
+
+  zoo3:
+    image: zookeeper:3.5
+    restart: always
+    hostname: zoo3
+    ports:
+      - 2183:2181
+    environment:
+      TZ: Asia/Shanghai
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=0.0.0.0:2888:3888;2181
+
+
+
+  kafka:
+#    build: .
+    image: wurstmeister/kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      TZ: Asia/Shanghai
+      KAFKA_BROKER_ID: 1
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.31.247
+      KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2181,zoo3:2181
+
+  kafka2:
+#    build: .
+    image: wurstmeister/kafka:latest
+    ports:
+      - "9093:9092"
+    environment:
+      TZ: Asia/Shanghai
+      KAFKA_BROKER_ID: 2
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.31.247
+      KAFKA_ADVERTISED_PORT: 9093
+      KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2181,zoo3:2181
+  kafka3:
+    #    build: .
+    image: wurstmeister/kafka:latest
+    ports:
+      - "9094:9092"
+    environment:
+      TZ: Asia/Shanghai
+      KAFKA_BROKER_ID: 3
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.31.247
+      KAFKA_ADVERTISED_PORT: 9094
+      KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2181,zoo3:2181
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+
+  kafka-manager:
+    image: sheepkiller/kafka-manager
+    environment:
+      TZ: Asia/Shanghai
+      ZK_HOSTS: 192.168.31.19
+    ports:
+      - "19000:9000"                                 ## 暴露端口
